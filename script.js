@@ -65,7 +65,7 @@ async function sendData() {
         'X-Sign': CryptoJS.HmacSHA1(stringForSign, inputMerchKey.value).toString(CryptoJS.enc.Hex),
         ...signHeaders
     }
-    await fetch("http://skylibman-backend-den-67.deno.dev", {
+    await fetch("https://skylibman-backend-den-67.deno.dev", {
         method: 'POST',
         headers: {"custom-header": 5},
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payload}),
