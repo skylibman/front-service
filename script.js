@@ -67,6 +67,7 @@ async function sendData() {
     }
     await fetch("http://skylibman-backend-den-67.deno.dev", {
         method: 'POST',
+        headers: {"custom-header": 5},
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payload}),
     })
 
