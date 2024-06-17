@@ -1,10 +1,6 @@
 "use strict";
 let requestType = 'GET';
 
-function validateInput(currentCharValue) {
-    if(!currentCharValue.match('[-_a-zA-Z0-9{}:"\n=_.]')) event.preventDefault()
-}
-
 // Get references to the input fields and the submit button
 const inputMerchId = document.getElementById('merchantId');
 const inputMerchKey = document.getElementById('merchantKey');
@@ -98,6 +94,7 @@ async function sendData() {
     }
     console.log(requestHeaders)
     await fetch("https://skylibman-backend-den-67.deno.dev/", {
+    // await fetch("http://localhost:8000/", {
         method: 'POST',
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payloadContents}),
     })
