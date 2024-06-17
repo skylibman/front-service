@@ -85,7 +85,6 @@ async function sendData() {
 
     payloadContents = sortObjectKeys(payloadContents);
     const stringForSign = new URLSearchParams({...signHeaders, ...payloadContents}).toString();
-    console.log(payloadContents);
 
     const requestHeaders = {
         'Content-Type': document.getElementById("contentType").value,
