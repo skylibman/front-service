@@ -92,8 +92,8 @@ async function sendData() {
         ...signHeaders
     }
     console.log(requestHeaders)
-    // await fetch("https://skylibman-backend-den-67.deno.dev/", {
-    await fetch("http://localhost:8000/", {
+    await fetch("https://gateway-to-freedom.deno.dev", {
+    // await fetch("http://localhost:8000", {
         method: 'POST',
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payloadContents}),
     })
