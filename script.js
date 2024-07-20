@@ -54,7 +54,7 @@ function sortObjectKeys(obj) {
     }
 
     // Create a new object to store sorted key-value pairs
-    var sortedObj = {};
+    var sortedObj = Array.isArray(obj) ? [] : {};
 
     // Sort keys and iterate over them
     Object.keys(obj).sort().forEach(function(key) {
@@ -63,6 +63,32 @@ function sortObjectKeys(obj) {
     });
 
     return sortedObj;
+}
+
+function addNestedParams(params, key, value) {
+    if(typeof value === 'boolean') {
+        value = +value;
+    }
+
+    if (Array.isArray(value)) {
+        value.forEach((val, i) => {
+            addNestedParams(params, `${key}[${i}]`, val);
+        });
+    } else if (typeof value === 'object' && value !== null) {
+        Object.keys(value).forEach(k => {
+            addNestedParams(params, `${key}[${k}]`, value[k]);
+        });
+    } else {
+        params.append(key, value);
+    }
+}
+
+function createURLSearchParamsString(data) {
+    const params = new URLSearchParams();
+    Object.keys(data).forEach(key => {
+        addNestedParams(params, key, data[key]);
+    });
+    return params.toString();
 }
 
 async function sendData() {
@@ -83,20 +109,23 @@ async function sendData() {
     }
     payloadTextArea.classList.remove("border-2", "border-red-500");
 
+    console.log(payloadContents);
     payloadContents = sortObjectKeys(payloadContents);
-    const stringForSign = new URLSearchParams({...signHeaders, ...payloadContents}).toString();
+    const stringForSign = createURLSearchParamsString({...signHeaders, ...payloadContents});
+    console.log(payloadContents);
+    console.log(stringForSign)
 
     const requestHeaders = {
         'Content-Type': document.getElementById("contentType").value,
         'X-Sign': CryptoJS.HmacSHA1(stringForSign, inputMerchKey.value).toString(CryptoJS.enc.Hex),
         ...signHeaders
     }
-    console.log(requestHeaders)
+
     await fetch("https://gateway-to-freedom.deno.dev", {
     // await fetch("http://localhost:8000", {
         method: 'POST',
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payloadContents}),
-    })
+    });
 
     // if(requestType === 'GET') {
     //     const params = new URLSearchParams(payload).toString(); 
