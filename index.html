@@ -10,6 +10,54 @@
     <link rel="icon" type="image/x-icon" href="./images/logo.svg">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autolinker/prism-autolinker.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <style>
+        /* Hide line numbers and extra decorations */
+        pre[class*="language-"] {
+            position: relative;
+            padding: 0;
+        }
+        pre[class*="language-"]::before,
+        pre[class*="language-"]::after {
+            display: none;
+        }
+        /* Optional: Adjust padding if needed */
+        pre[class*="language-"] > code {
+            /*padding: 16px;*/
+        }
+        a {
+            text-decoration: underline;
+        }
+        .button {
+            background-color: #358ccb
+        }
+        .button:hover {
+            background-color: #2E7BB2
+        }
+        .code-toolbar {
+            height: 100%;
+        }
+        .toolbar {
+            margin: 0 7px !important;
+            /*right: 5px !important;*/
+        }
+        .copy-to-clipboard-button {
+            padding: 0 8px !important;
+        }
+    </style>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autolinker/prism-autolinker.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" crossorigin="anonymous"></script>
+        
     <script defer src="script.js"></script>
 </head>
 
@@ -17,7 +65,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex">
             <!-- Left side -->
-            <fieldset class="w-1/2 pr-4">
+            <fieldset class="w-2/5 pr-4">
                 <div class="mb-4">
                     <label for="merchantId" class="block text-gray-700 font-bold mb-2">X-Merchant-Id</label>
                     <input required autofocus type="text" id="merchantId" name="merchantId" value=""
@@ -36,11 +84,7 @@
                 	    <button id="checkboxLabel" class="ml-4 h-5/6 rounded-lg bg-gray-200 text-gray-700 font-medium px-3 py-1" onclick="changeRequestType(this)">GET</button>
                     </div>
                 </div>
-            </fieldset>
-
-            <!-- Right side -->
-            <fieldset class="w-1/2 pl-4">
-            	<div class="mb-4">
+                <div class="mb-4">
                     <label for="contentType" class="block text-gray-700 font-bold mb-2">Content-Type</label>
                     <select id="contentType" name="contentType"
                         class="form-input w-full px-4 py-2 rounded-lg border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-400">
@@ -53,15 +97,24 @@
                     <textarea id="payload" name="bigInput" rows="5"
                         class="form-textarea w-full px-4 py-2 rounded-lg border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-400"></textarea>
                 </div>
-            </fieldset>
-        </div>
 
-        <!-- Submit Button -->
-        <div class="mt-8 flex justify-center">
-        	<button type="submit" id="submitBtn"
-        	    class="justify-center w-60 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline focus:bg-blue-700"
-        	    onclick="sendData()"
-        	    disabled>Submit</button>
+                <!-- Submit Button -->
+                <div class="mt-8 flex justify-center">
+                    <button type="submit" id="submitBtn"
+                        class="button justify-center w-60 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline focus:bg-blue-700"
+                        onclick="sendData()"
+                        disabled>Submit</button>
+                </div>
+            </fieldset>
+
+            <!-- Right side -->
+            <fieldset class="w-3/5 pl-4">
+                <pre class="h-full line-numbers" style="white-space: pre-wrap;">
+                    <code id="code-block" class="language-json">
+                        "Please execute your first HTTP request to receive your JSON"
+                    </code>
+                </pre>
+            </fieldset>
         </div>
     </div>
 </body>

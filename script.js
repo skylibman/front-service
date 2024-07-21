@@ -1,4 +1,5 @@
 "use strict";
+
 let requestType = 'GET';
 
 // Get references to the input fields and the submit button
@@ -109,34 +110,39 @@ async function sendData() {
     }
     payloadTextArea.classList.remove("border-2", "border-red-500");
 
-    console.log(payloadContents);
     payloadContents = sortObjectKeys(payloadContents);
     const stringForSign = createURLSearchParamsString({...signHeaders, ...payloadContents});
-    console.log(payloadContents);
-    console.log(stringForSign)
 
+    const xSign = CryptoJS.HmacSHA1(stringForSign, inputMerchKey.value).toString(CryptoJS.enc.Hex);
     const requestHeaders = {
         'Content-Type': document.getElementById("contentType").value,
-        'X-Sign': CryptoJS.HmacSHA1(stringForSign, inputMerchKey.value).toString(CryptoJS.enc.Hex),
+        'X-Sign': xSign,
         ...signHeaders
     }
 
-    await fetch("https://gateway-to-freedom.deno.dev", {
+    const response = await fetch("https://gateway-to-freedom.deno.dev", {
     // await fetch("http://localhost:8000", {
         method: 'POST',
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payloadContents}),
     });
+    const data = await response.json();
+    const jsonResponse = JSON.stringify(data, null, 2);
+    const jsonSignCheck = JSON.stringify({"stringForSign": stringForSign, "X-Sign": xSign}, null, 2);
 
-    // if(requestType === 'GET') {
-    //     const params = new URLSearchParams(payload).toString(); 
-    //     await fetch(document.getElementById("apiUrl").value + '?' + params, {
-    //         method: document.getElementById("checkboxLabel").innerHTML,
-    //         headers: requestHeaders
-    //     })
-    // } else if(requestType === 'POST') {
-        
-    // }
-    
+    // Insert JSON content into the code block
+    const codeBlock = document.querySelector('#code-block');
+    codeBlock.textContent = jsonSignCheck + "\n\n" + jsonResponse;
+
+    // Set defaults for the Normalize Whitespace plugin
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+    });
+
+    // Apply syntax highlighting
+    Prism.highlightAll();
 }
 
 function dec2hex (dec) {
