@@ -122,8 +122,8 @@ async function sendData() {
         ...signHeaders
     }
 
-    // const response = await fetch("https://gateway-to-freedom.deno.dev", {
-    await fetch("http://localhost:8000", {
+    const response = await fetch("https://gateway-to-freedom.deno.dev", {
+    // await fetch("http://localhost:8000", {
         method: 'POST',
         body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: bodyData}),
     });
