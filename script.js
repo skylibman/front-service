@@ -110,20 +110,22 @@ async function sendData() {
     }
     payloadTextArea.classList.remove("border-2", "border-red-500");
 
+    const contentType = document.getElementById("contentType").value;
     payloadContents = sortObjectKeys(payloadContents);
+    const bodyData = contentType === "application/x-www-form-urlencoded" ? createURLSearchParamsString(payloadContents) : JSON.stringify(payloadContents);
     const stringForSign = createURLSearchParamsString({...signHeaders, ...payloadContents});
 
     const xSign = CryptoJS.HmacSHA1(stringForSign, inputMerchKey.value).toString(CryptoJS.enc.Hex);
     const requestHeaders = {
-        'Content-Type': document.getElementById("contentType").value,
+        'Content-Type': contentType,
         'X-Sign': xSign,
         ...signHeaders
     }
 
-    const response = await fetch("https://gateway-to-freedom.deno.dev", {
-    // await fetch("http://localhost:8000", {
+    // const response = await fetch("https://gateway-to-freedom.deno.dev", {
+    await fetch("http://localhost:8000", {
         method: 'POST',
-        body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: payloadContents}),
+        body: JSON.stringify({url: document.getElementById("apiUrl").value, method: requestType, headers: requestHeaders, body: bodyData}),
     });
     const data = await response.json();
     const jsonResponse = JSON.stringify(data, null, 2);
